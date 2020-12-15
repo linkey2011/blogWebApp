@@ -4,6 +4,7 @@ import blog.cser.blogWebApp.conf.ConstantValue;
 import blog.cser.blogWebApp.entity.Blog;
 import blog.cser.blogWebApp.entity.Post;
 import blog.cser.blogWebApp.entity.util.BaseResponse;
+import blog.cser.blogWebApp.entity.util.ResultCode;
 import blog.cser.blogWebApp.util.CSerUtils;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
-public class BaseController {
+public class BaseController<T> {
     Blog myBlog;
 
     BaseController() {
@@ -25,9 +26,13 @@ public class BaseController {
       //  this.postList = p;
     }
 
-/*   <T> BaseResponse<T> setResultSucess(T data){
-       return
-    }*/
+    BaseResponse<T> setResultSucess(T data){
+       return setResult(ResultCode.SUCCESS.code(),ResultCode.SUCCESS.message(),data);
+    }
+
+    BaseResponse<T> setResult(Integer code,String msg,T data){
+        return new BaseResponse(code,msg,data);
+    }
 
 
 }
