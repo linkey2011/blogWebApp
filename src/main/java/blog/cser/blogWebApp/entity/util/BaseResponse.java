@@ -4,9 +4,10 @@ import lombok.Data;
 
 @Data
 public class BaseResponse<T> {
+    private Integer code;
     private String msg;
     private T data;
-    private Integer code;
+
 
     public BaseResponse(T data) {
         this.data = data;
