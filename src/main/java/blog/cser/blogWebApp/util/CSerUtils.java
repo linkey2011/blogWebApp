@@ -303,6 +303,12 @@ public class CSerUtils {
                     String infoValue  = infoValue1.trim();
                     int i = 0;
                     switch (infoHead){
+                        case "lock:":
+                            if (StringUtils.isNotBlank(infoValue))
+                                singlePost.setLock(infoValue);
+                            else
+                                singlePost.setTop(1);
+                            break;
                         case "top:" :
                             if (StringUtils.isNotBlank(infoValue))
                                 singlePost.setTop(Integer.valueOf(infoValue));
