@@ -17,11 +17,11 @@ public class ConstantValue {
     public static String tomcatPort;
 
     @Autowired
-    private ConstantValue(@Value("${post.path.head}")  String value1,
-                          @Value("${web.suffix}")  String value2,
-                          @Value("${web.domain}")  String value3,
-                          @Value("${web.environment}")  String value4,
-                          @Value("${server.port}")  String value5
+    public ConstantValue(@Value("${post.path.head}") String value1,
+                         @Value("${web.suffix}") String value2,
+                         @Value("${web.domain}") String value3,
+                         @Value("${web.environment}") String value4,
+                         @Value("${server.port}") String value5
     ) {
         ConstantValue.PostPath = value1;
         ConstantValue.webSuffix = value2;
