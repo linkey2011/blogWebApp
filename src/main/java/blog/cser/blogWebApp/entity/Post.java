@@ -24,6 +24,7 @@ public class Post implements java.io.Serializable {
     private String category; //分类
     private String status;   //是否发布
     private String content;  //文章内容
+    private String lock;// 锁
 
 
     //以下属性来自 程序生成
