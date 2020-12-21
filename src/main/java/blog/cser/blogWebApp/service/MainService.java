@@ -14,8 +14,14 @@ public interface MainService {
     @RequestMapping(value = "/test")
     String index();
 
-    @RequestMapping(value = "/blogtest/{postId}.html" )
-    String getPostById(@PathVariable("postId")String postId);
+//    @RequestMapping(value = "/blogtest/{postId:\\*}.html" )
+//    String getPostById(@PathVariable("postId")String postId);
+//
+
+    @RequestMapping(value = "/blogtest/(\\**).html" )
+    String getPostById(HttpServletRequest request);
+
+
 
     @RequestMapping(value ="")//这里本来应该填空"feed.xml"
     String feel(HttpServletRequest request);

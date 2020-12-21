@@ -7,6 +7,7 @@ import blog.cser.blogWebApp.entity.PropertyForBlog;
 import blog.cser.thirdparty.Util.ListUtils;
 import com.alibaba.fastjson.JSON;
 
+import javafx.geometry.Pos;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -34,7 +35,7 @@ public class CSerUtils {
      * @param mdPath
      * @return
      */
-    public static List<String> sortListByYYYYMMDD(List<String> mdPath){
+    public  List<String> sortListByYYYYMMDD(List<String> mdPath){
         String pattern="/\\d{8}-";
         Pattern p1 = Pattern.compile(pattern); // 正则表达式
 
@@ -73,13 +74,13 @@ public class CSerUtils {
      * list去重，待优化
      * @param list
      */
-    public static void removeDuplicate(List<String> list) {
+    public  void removeDuplicate(List<String> list) {
         LinkedHashSet<String> set = new LinkedHashSet<String>(list.size());
         set.addAll(list);
         list.clear();
         list.addAll(set);
     }
-    public static String getURLHead(String protocol){
+    public  String getURLHead(String protocol){
         String urlHead = null;
         String port = null;
         String host = ConstantValue.domain;
@@ -95,22 +96,22 @@ public class CSerUtils {
         return urlHead;
     }
 
-    public static Blog initMyBlog(String firstPath) {
+    public  Blog initMyBlog(String firstPath) {
         //整个网站所有的数据
         Blog initWebBlog = new Blog();
         List<String> allFilePathList = new ArrayList<>();
         //获取当前文件下所有文件的绝对路径
-        CSerUtils.getAllFilePath(firstPath,allFilePathList);
+        getAllFilePath(firstPath,allFilePathList);
         //仅保留以md和markdown结尾的路径
-        List<String> mdPathList = CSerUtils.checkMdFile(allFilePathList);
-        List<String>  mdNewPathList = CSerUtils.sortListByYYYYMMDD(mdPathList);
+        List<String> mdPathList = checkMdFile(allFilePathList);
+        List<String>  mdNewPathList = sortListByYYYYMMDD(mdPathList);
         List<Post> postList = new ArrayList<>();
         mdNewPathList.stream().forEach(mdPath->{
             try {
                 //读取单个md文件内容，string 类型返回
              //   System.out.println(mdPath.substring(0,7));
-                String fileContent = CSerUtils.readFileContent2String(mdPath);
-                Post singlePost = CSerUtils.getPostObjectFromFileContent(fileContent,mdPath,initWebBlog);
+                String fileContent = readFileContent2String(mdPath);
+                Post singlePost = getPostObjectFromFileContent(fileContent,mdPath,initWebBlog);
                 //草稿状态的不要
                 if (!singlePost.getStatus().equals("publish")) return; //retune 相当于continue，结束本单次循环
                 postList.add(singlePost);
@@ -124,8 +125,9 @@ public class CSerUtils {
 
 /*        String [] sortNameArr = {"top","writeDayDate","title"};
         boolean [] isAscArr = {false,false,true};*/
-        String [] sortNameArr = {"writeDayDate","title"};
-        boolean [] isAscArr = {false,true};
+        //根据属性排序
+        String [] sortNameArr = {"top","writeDayDate","title"};
+        boolean [] isAscArr = {false,false,true};
         ListUtils.sort(postList,sortNameArr,isAscArr);
         initWebBlog.setPostList(postList);
         return initWebBlog;
@@ -139,7 +141,7 @@ public class CSerUtils {
      * @param date
      * @return  日期格式统一转化为yyyy—MM-dd, 月，天不足两位补0
      */
-    public static String dateUtil(String date) {
+    public  String dateUtil(String date) {
         String[] myDate = date.split("-");
         String year  = String.format("%02d" ,Long.parseLong(myDate[0]));
         String month = String.format("%02d" ,Long.parseLong(myDate[1]));
@@ -153,7 +155,7 @@ public class CSerUtils {
      * @param pathList
      * @return 仅仅读取所有md和markdown结尾的文件
      */
-    public static List<String> checkMdFile(List<String> pathList){
+    public  List<String> checkMdFile(List<String> pathList){
         String pattern1="^(.*?)\\.md$";
         String pattern2="^(.*?)\\.markdown$";
 
@@ -178,7 +180,7 @@ public class CSerUtils {
      * @param allFilepathList 返回该文件夹下所有文件的绝对路径
      * @return
      */
-    public static List<String> getAllFilePath(String firstPath,List<String> allFilepathList) {
+    public  List<String> getAllFilePath(String firstPath,List<String> allFilepathList) {
         // get file list where the path has
         File file = new File(firstPath);
         // get the folder list
@@ -208,7 +210,7 @@ public class CSerUtils {
     }
 
 
-    public static List<String> getTagsList(String tags){
+    public  List<String> getTagsList(String tags){
         String pattern = "(,|\\s|，|。|·|\\*|；|’|‘|、|;|'|\\.|\\/)";
         String[] myTags = tags.split(pattern);
         List<String> tagsList = new ArrayList<>();
@@ -226,7 +228,7 @@ public class CSerUtils {
      * @return 以为字符串的形式返回文件内容
      * @throws IOException
      */
-    public static String  readFileContent2String(String filePath) throws IOException {
+    public  String  readFileContent2String(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         byte[] data = Files.readAllBytes(path);
         String result = new String(data, "utf-8");
@@ -239,7 +241,7 @@ public class CSerUtils {
      * @param mdPath
      * @return 根据文件路径生成对应的url
      */
-    public static String setPostUrl(String mdPath){
+    public String setPostUrl(String mdPath){
         String patternPath = "\\/" + ConstantValue.PostPath +"\\/(.*)(\\.md|\\.markdown)";//头信息细节正则
         Pattern p = Pattern.compile(patternPath); // 正则表达式
         Matcher m = p.matcher(mdPath); // 操作的字符串
@@ -262,16 +264,16 @@ public class CSerUtils {
      * @param fileContent
      * @return
      */
-    public static Post getPostObjectFromFileContent(String fileContent,String mdPath,Blog initWebBlog) throws ParseException {
+    public  Post getPostObjectFromFileContent(String fileContent,String mdPath,Blog initWebBlog) throws ParseException {
         //准备工作
         Post singlePost = new Post();
         String patternHead1 = "<!--([\\s\\S]*)-->";//头信息正则
-        String pattern2 = "\\s*(author|head|date|title|top|summary|images|tags|category|status)\\s*:(.*?)";//头信息细节正则
+        String pattern2 = "\\s*(author|head|date|lock|title|top|summary|images|tags|category|status)\\s*:(.*?)";//头信息细节正则
         String patternPath = "\\/" + ConstantValue.PostPath +"\\/(.*)(\\.md|\\.markdown)";//头信息细节正则
         //设置博文内容
-        singlePost.setContent(CSerUtils.mdString2Html(fileContent));
+        singlePost.setContent(mdString2Html(fileContent));
         {//这一部分主要设置 post的系统信息
-            String postUrl = CSerUtils.setPostUrl(mdPath);
+            String postUrl = setPostUrl(mdPath);
             String fileName = postUrl.substring(ConstantValue.PostPath.length()+2,postUrl.length() - ConstantValue.webSuffix.length());
             singlePost.setFileName(fileName);
             singlePost.setPostId(fileName.substring(0,ConstantValue.webSuffix.length()).hashCode());
@@ -304,16 +306,18 @@ public class CSerUtils {
                     int i = 0;
                     switch (infoHead){
                         case "lock:":
-                            if (StringUtils.isNotBlank(infoValue))
+                            if (StringUtils.isNotBlank(infoValue)){
                                 singlePost.setLock(infoValue);
-                            else
-                                singlePost.setTop(1);
+                                String postContent = singlePost.getContent();
+                                singlePost.setContent(String.valueOf(postContent.hashCode()));
+                            }
+
                             break;
                         case "top:" :
                             if (StringUtils.isNotBlank(infoValue))
                                 singlePost.setTop(Integer.valueOf(infoValue));
                             else
-                                singlePost.setTop(1);
+                                singlePost.setTop(0);
                             break;
                         case "author:" :
                             if (StringUtils.isNotBlank(infoValue))
@@ -325,7 +329,7 @@ public class CSerUtils {
                             break;
                         case "date:" :
                             if (StringUtils.isNotBlank(infoValue)){
-                                String yyyyMMdd = CSerUtils.dateUtil(infoValue);
+                                String yyyyMMdd = dateUtil(infoValue);
                                 SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
                                 Date writeDay = formater.parse(yyyyMMdd);
                                 singlePost.setWriteDayStr(yyyyMMdd);
@@ -354,7 +358,7 @@ public class CSerUtils {
                             if (StringUtils.isNotBlank(infoValue)){
                                 //对单个博客设置对应的标签
                                 singlePost.setTagsStr(infoValue);
-                                singlePost.setTagsList(CSerUtils.getTagsList(infoValue));
+                                singlePost.setTagsList(getTagsList(infoValue));
                                 //list 转化为 set
                                 List<String> tagsList = singlePost.getTagsList();
                                 //如果对应的tagMap 则初始化
@@ -437,7 +441,7 @@ public class CSerUtils {
                             break;
                         case "summary:" :
                             if (StringUtils.isNotBlank(infoValue))
-                                singlePost.setSummary(CSerUtils.mdString2Html(infoValue));
+                                singlePost.setSummary(mdString2Html(infoValue));
                             break;
                     }
                 }
@@ -451,17 +455,26 @@ public class CSerUtils {
         }
         String json= JSON.toJSONString(singlePost);//关键
         // System.out.println(json);
-
+        autoCheckBlogProps(singlePost);
         //singlePost.setPostId("");
         return singlePost;
     }
 
     /**
+     * 对没有填写的属性自动填写
+     * @param singPost
+     */
+    void autoCheckBlogProps(Post singPost){
+        if (singPost.getTop() == null) {
+        singPost.setTop(0);
+        }
+    }
+    /**
      *
      * @param sourceString 入参 String 类型的md文件内容
      * @return 解析成html格式的 string
      */
-    public static String mdString2Html(String sourceString){
+    public  String mdString2Html(String sourceString){
         Parser parser = Parser.builder().build();
         Node document = parser.parse(sourceString);
         HtmlRenderer renderer = HtmlRenderer.builder().build();
@@ -470,7 +483,7 @@ public class CSerUtils {
     }
 
 
-    public static String Object2Json(Object T){
+    public  String Object2Json(Object T){
 
         return JSON.toJSONString(T);
     }
