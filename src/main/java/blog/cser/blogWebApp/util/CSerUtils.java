@@ -3,7 +3,9 @@ package blog.cser.blogWebApp.util;
 import blog.cser.blogWebApp.conf.ConstantValue;
 import blog.cser.blogWebApp.entity.Blog;
 import blog.cser.blogWebApp.entity.Post;
+import blog.cser.blogWebApp.entity.PostDto;
 import blog.cser.blogWebApp.entity.PropertyForBlog;
+import blog.cser.blogWebApp.mapper.PostMapper;
 import blog.cser.thirdparty.Util.ListUtils;
 import com.alibaba.fastjson.JSON;
 
@@ -12,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +31,7 @@ import java.util.regex.Pattern;
 
 @PropertySource({"classpath:application.properties"})
 @Component
+
 public class CSerUtils {
 
     /**
@@ -129,7 +133,12 @@ public class CSerUtils {
         String [] sortNameArr = {"top","writeDayDate","title"};
         boolean [] isAscArr = {false,false,true};
         ListUtils.sort(postList,sortNameArr,isAscArr);
+
         initWebBlog.setPostList(postList);
+        List<PostDto> postDtoList = PostMapper.INSTANCE.PostListToPostDtoList(postList);
+
+        initWebBlog.setPostDtoList(postDtoList);
+        initWebBlog.setPostDtoList(postDtoList);
         return initWebBlog;
 
     }
@@ -457,6 +466,7 @@ public class CSerUtils {
         // System.out.println(json);
         autoCheckBlogProps(singlePost);
         //singlePost.setPostId("");
+       // PostDto singlePostDto = PostMapper.INSTANCE.PostToPostDto(singlePost);
         return singlePost;
     }
 

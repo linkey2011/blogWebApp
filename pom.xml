@@ -16,9 +16,16 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
+		<lombok.version>1.18.10</lombok.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.atlassian.commonmark</groupId>
 			<artifactId>commonmark</artifactId>
@@ -80,6 +87,8 @@
 		     <groupId>org.springframework.boot</groupId>
 		     <artifactId>spring-boot-starter-aop</artifactId>
 		 </dependency>
+
+
     </dependencies>
 
 	<build>
@@ -87,6 +96,26 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

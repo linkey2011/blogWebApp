@@ -7,7 +7,6 @@ import blog.cser.blogWebApp.entity.Post;
 import blog.cser.blogWebApp.entity.util.BaseResponse;
 import blog.cser.blogWebApp.util.CSerUtils;
 import com.alibaba.fastjson.JSON;
-import com.sun.javaws.IconUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +55,7 @@ public class MainController extends BaseController   {
     @RequestMapping("/getAllPosts")
     public BaseResponse getAllPosts(){
         this.initMyWeb();
-        return setResultSucess(this.MYWEBBLOG.getPostList());
+        return setResultSucess(this.MYWEBBLOG.getPostDtoList());
     }
     @RequestMapping("/getAllTags")
     public BaseResponse getAllTags(){
