@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -48,25 +49,30 @@ public class CSerLogAspect{
 
     @Around("webLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        //准备工作 1
-        //获取执行的controlle的init函数
+        //第 0 步 获取方法名
+        Signature signature = joinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+        Method method = methodSignature.getMethod();
+        //秒表开始
+        StopWatch stopWatch = new StopWatch("统一一组任务耗时");
+        stopWatch.start(method.getName());
+
+        //第 1 步 准备工作 init网站
         MainController mainController = (MainController)joinPoint.getTarget();
         mainController.initMyWeb();
 
-        long startTime = System.currentTimeMillis();
         //获取当前请求对象
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         //记录请求信息
-        //执行具体的函数
+        //执行具体的业务代码
         Object result = joinPoint.proceed();
-        Object O = joinPoint.getTarget();
+        //秒表停止
+        stopWatch.stop();
+        String methodName = request.getRequestURI(); // /api/category/query
 
 
-        Signature signature = joinPoint.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-        Method method = methodSignature.getMethod();
-
+        System.out.println("方法名："+methodName +"耗时：" +stopWatch.getTotalTimeMillis());
 
         return result;
     }

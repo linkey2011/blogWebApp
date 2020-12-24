@@ -498,4 +498,56 @@ public class CSerUtils {
         return JSON.toJSONString(T);
     }
 
+    /**
+     *
+     * @param haystack  源字符串
+     * @param needle    关键字
+     * @return
+     */
+    public int sunday(String haystack, String needle) {
+        if (haystack == null || needle == null) {
+            return -1;
+        }
+        if (needle.isEmpty()) {
+            return 0;
+        }
+        if (haystack.isEmpty()) {
+            return -1;
+        }
+
+        char[] srcArr = haystack.toCharArray();
+        char[] tarArr = needle.toCharArray();
+        int i = 0, j = 0;
+
+        while (i + tarArr.length - 1 < srcArr.length) {
+            if (srcArr[i+j] == tarArr[j]) {
+                if (j == tarArr.length - 1) {
+                    return i;
+                }
+                j++;
+                continue;
+            }
+
+            if (i+ tarArr.length == srcArr.length) {
+                return -1;
+            }
+
+            boolean isMatch = false;
+            for (int k = tarArr.length - 1; k >= 0; k--) {
+                if (srcArr[i + tarArr.length] == tarArr[k]) {
+                    isMatch = true;
+                    i += tarArr.length - k;
+                    j = 0;
+                    break;
+                }
+            }
+            if (!isMatch) {
+                i += tarArr.length + 1;
+                j = 0;
+            }
+        }
+
+        return -1;
+    }
+
 }

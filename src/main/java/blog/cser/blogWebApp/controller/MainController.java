@@ -4,7 +4,9 @@ import blog.cser.blogWebApp.annotation.CSerLog;
 import blog.cser.blogWebApp.conf.ConstantValue;
 import blog.cser.blogWebApp.entity.Blog;
 import blog.cser.blogWebApp.entity.Post;
+import blog.cser.blogWebApp.entity.PostDto;
 import blog.cser.blogWebApp.entity.util.BaseResponse;
+import blog.cser.blogWebApp.mapper.PostMapper;
 import blog.cser.blogWebApp.util.CSerUtils;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -57,19 +59,35 @@ public class MainController extends BaseController   {
         this.initMyWeb();
         return setResultSucess(this.MYWEBBLOG.getPostDtoList());
     }
+    @CSerLog()
     @RequestMapping("/getAllTags")
     public BaseResponse getAllTags(){
         return setResultSucess(this.MYWEBBLOG.getTagsForURLMap());
     }
+    @CSerLog()
     @RequestMapping("/getAllCategory")
     public BaseResponse getAllCategory(){
         return setResultSucess(this.MYWEBBLOG.getCategoryURLMap());
     }
+    @CSerLog()
     @RequestMapping("/getAllTimeClustering")
     public BaseResponse getAllTimeClustering(){
         return setResultSucess(this.MYWEBBLOG.getYearMonthURLMap());
     }
 
+    @CSerLog()
+    @RequestMapping("/search")
+    public  BaseResponse search(@RequestParam(value = "keyword") String keyword){
+        List<Post> postListForSearch = new ArrayList<>();
+
+        this.MYWEBBLOG.getPostList().stream().forEach(post->{
+            if (cSerUtils.sunday(post.getContent(),keyword) != -1){//不等于-1 则匹配成功
+                postListForSearch.add(post);
+            }
+        });
+        List<PostDto> postDtoListForSearch = PostMapper.INSTANCE.PostListToPostDtoList(postListForSearch);
+        return setResultSucess(postDtoListForSearch);
+    }
 
     //首页
     @CSerLog()
@@ -97,6 +115,7 @@ public class MainController extends BaseController   {
      * @param halfURL  博客文件夹到thml结尾L
      * @return
      */
+    @CSerLog()
     @RequestMapping(value = "getSinglePostByHalfURL",method= RequestMethod.GET)
     public BaseResponse getSinglePostByHalfURL(@RequestParam("halfURl")String  halfURL) {
         Post iWantPost = null;
@@ -169,18 +188,11 @@ public class MainController extends BaseController   {
     }
 
 
-    public String getAllTags(HttpServletRequest request) {
-        return null;
-    }
 
 
-    public String getAllCategory(HttpServletRequest request) {
-        return null;
-    }
 
-    public String getAllPostBycategory(HttpServletRequest request) {
-        return cSerUtils.Object2Json(this.MYWEBBLOG.getCategoryURLMap().toString());
-    }
+
+
 
     public String feel(HttpServletRequest request) {
         request.getScheme(); //得到协议名 例如：http
@@ -198,10 +210,7 @@ public class MainController extends BaseController   {
     }
 
 
-    public String getAllPostByTags(HttpServletRequest request) {
-        //  List<String> blogTagsList =  this.myBlog.getTagsList();
-        return "blogTagsList.toString()";
-    }
+
 
     String fortest(List<Post> postList,String xie_zhuji_duanou){
         List<String> urlListmd = new ArrayList<>();
