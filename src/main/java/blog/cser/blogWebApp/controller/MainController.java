@@ -12,21 +12,23 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @Slf4j
-@RestController
+//@RestController
+@Controller
 @RequestMapping("/")
-@CrossOrigin() // 跨域
+//@CrossOrigin() // 跨域
 public class MainController extends BaseController   {
 
     @Autowired
@@ -52,6 +54,36 @@ public class MainController extends BaseController   {
         }
     }
 
+    //首页
+    @CSerLog()
+    @RequestMapping("")
+    //@ResponseBody
+    public ModelAndView index(HttpServletRequest request) {
+        i += 2;
+        System.out.println(i);
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("postList", this.MYWEBBLOG.getPostDtoList());
+
+        return modelAndView;
+    }
+    @CSerLog
+    //@RequestMapping("/blog/{halfURL:(.*?)\\.html}")
+    @RequestMapping("/blog/**//{halfURL:.+}")
+    public ModelAndView getPostDetail(@PathVariable("halfURL") String halfURL,HttpServletRequest request){
+        String halfUrlFromRequest = request.getServletPath();
+        Post iWantPost = null;
+        for (Post post:this.MYWEBBLOG.getPostList()){
+            if (post.getSiteHalfURL().equals(halfUrlFromRequest)){
+                iWantPost = post;
+                break;
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView("postDetail");
+        modelAndView.addObject("iWantPost", iWantPost);
+       // System.out.println(iWantPost.toString());
+        return modelAndView;
+    }
+
 
     @CSerLog()
     @RequestMapping("/getAllPosts")
@@ -59,6 +91,30 @@ public class MainController extends BaseController   {
         this.initMyWeb();
         return setResultSucess(this.MYWEBBLOG.getPostDtoList());
     }
+
+    @CSerLog
+    @RequestMapping("/getBlogByName/{fileName}")
+    @CrossOrigin()
+    public BaseResponse getBlogByFileName(@PathVariable("fileName") String fileName){
+        Post getPost = null;
+        for (Post post : this.MYWEBBLOG.getPostList()){
+            if (cSerUtils.sunday(post.getFileName(),fileName) != -1){
+                getPost = post;
+                break;
+            }
+
+        }
+      return setResultSucess(getPost);
+    }
+
+
+    @CSerLog
+    @RequestMapping("/feed.xml")
+    public BaseResponse feedXml(){
+        return setResultSucess();
+    }
+
+
     @CSerLog()
     @RequestMapping("/getAllTags")
     public BaseResponse getAllTags(){
@@ -89,11 +145,14 @@ public class MainController extends BaseController   {
         return setResultSucess(postDtoListForSearch);
     }
 
+
+
+
     //首页
     @CSerLog()
-    @RequestMapping("")
+    @RequestMapping("/123")
     //@ResponseBody
-    public String index(HttpServletRequest request) {
+    public String index123(HttpServletRequest request) {
         this.initMyWeb();
         i += 2;
         System.out.println("i = "+i);

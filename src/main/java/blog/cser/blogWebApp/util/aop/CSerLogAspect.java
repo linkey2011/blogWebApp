@@ -1,11 +1,14 @@
 package blog.cser.blogWebApp.util.aop;
 
 import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 import blog.cser.blogWebApp.controller.MainController;
+import blog.cser.blogWebApp.util.IPUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -71,8 +74,13 @@ public class CSerLogAspect{
         stopWatch.stop();
         String methodName = request.getRequestURI(); // /api/category/query
 
+        //获取ip
+        String ip = IPUtil.getClientIpAddr(request);
 
-        System.out.println("方法名："+methodName +"耗时：" +stopWatch.getTotalTimeMillis());
+        System.out.println(LocalDateTime.now() +"   "+
+                methodName +"        耗时---->" +stopWatch.getTotalTimeMillis()+ "ms"
+                +"     ip--->"+ip
+        );
 
         return result;
     }

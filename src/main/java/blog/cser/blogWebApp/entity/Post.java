@@ -36,6 +36,95 @@ public class Post implements java.io.Serializable {
     private String ctime;
     private String siteHalfURL;
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
+    public String getAuthor() {
+        return author;
+    }
 
+    public String getHead() {
+        return head;
+    }
+
+    public Date getWriteDayDate() {
+        return writeDayDate;
+    }
+
+    public String getWriteDayStr() {
+        return writeDayStr;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public List<String> getPostKeywords() {
+        return postKeywords;
+    }
+
+    public Integer getTop() {
+        return top;
+    }
+
+    public String getImagesURL() {
+        return imagesURL;
+    }
+
+    public String getTagsStr() {
+        return tagsStr;
+    }
+
+    public List<String> getTagsList() {
+        return tagsList;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getLock() {
+        return lock;
+    }
+
+    public Integer getPostId() {
+        return postId;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getServerPath() {
+        return serverPath;
+    }
+
+    public String getSitePath() {
+        return sitePath;
+    }
+
+    public String getMtime() {
+        return mtime;
+    }
+
+    public String getCtime() {
+        return ctime;
+    }
+
+    public String getSiteHalfURL() {
+        return siteHalfURL;
+    }
 }
