@@ -133,7 +133,7 @@ public class MainController extends BaseController   {
 
     @CSerLog()
     @RequestMapping("/search")
-    public  BaseResponse search(@RequestParam(value = "keyword") String keyword){
+    public  ModelAndView search(@RequestParam(value = "keyword") String keyword){
         List<Post> postListForSearch = new ArrayList<>();
 
         this.MYWEBBLOG.getPostList().stream().forEach(post->{
@@ -141,8 +141,18 @@ public class MainController extends BaseController   {
                 postListForSearch.add(post);
             }
         });
+
+
         List<PostDto> postDtoListForSearch = PostMapper.INSTANCE.PostListToPostDtoList(postListForSearch);
-        return setResultSucess(postDtoListForSearch);
+
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("postList", postDtoListForSearch);
+
+        return modelAndView;
+      //  return setResultSucess(postDtoListForSearch);
+
+
+
     }
 
 

@@ -19,9 +19,6 @@ public class SpringBootConfig {
         jfr.setContentType("text/html;charset=UTF-8");
         jfr.setOrder(0);
 
-        // 设置在模板中可通过 #(session.value) 访问 session 中的数据
-        jfr.setSessionInView(true);
-
         // 获取 engine 对象，对 enjoy 模板引擎进行配置，配置方式与前面章节完全一样
         Engine engine  = JFinalViewResolver.engine;
 
@@ -36,8 +33,8 @@ public class SpringBootConfig {
         engine.setBaseTemplatePath("/templates/");
 
         // 添加模板函数
-//        engine.addSharedFunction("/common/_layout.html");
-//        engine.addSharedFunction("/common/_paginate.html");
+     //   engine.addSharedFunction("/common/_layout.html");
+     //   engine.addSharedFunction("/common/_paginate.html");
 
         // 更多配置与前面章节完全一样
         // engine.addDirective(...)

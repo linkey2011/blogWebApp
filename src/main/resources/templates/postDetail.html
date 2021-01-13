@@ -5,23 +5,69 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <!--代码块显示行号一共需要   四行代码    下面为三行-->
 
-    <link   href="./prism/prism.css" rel="stylesheet" />
-    <script src="static/prism/prism.js"></script>
+    <link   href="/prism/prism.css" rel="stylesheet" />
+    <script src="/prism/prism.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
+    <style>
+        body {
+            background-color: white;
+            margin:0; padding:0;
+            text-align: center;
+        }
+        div, p, table, th, td {
+            list-style:none;
+            margin:0; padding:0;
+            color:#333; font-size:12px;
+            font-family:dotum, Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+        }
+        .ztree li a.curSelectedNode {
+            padding-top: 0px;
+            background-color: #FFE6B0;
+            color: black;
+            height: 16px;
+            border: 1px #FFB951 solid;
+            opacity: 0.8;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/ztree/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="/ztree/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="/ztree/jquery.ztree.core-3.5.js"></script>
+    <script type="text/javascript" src="/ztree/ztree_toc.js"></script>
+    <SCRIPT type="text/javascript" >
+        <!--
+        $(document).ready(function(){
+            $('#tree').ztree_toc({
+                is_auto_number: true,
+                // documment_selector: '.first_part'
+            });
+        });
+        //-->
+    </SCRIPT>
 </head>
 <body>
-<h2>#(iWantPost.title)</h2>
+<TABLE border=0 height=600px align=left>
+    <TR>
+        <TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+            <ul id="tree" class="ztree">
 
-<span>#(iWantPost.author)</span>
-<span>#(iWantPost.writeDayStr)</span>
-<span>#(iWantPost.category)</span>
-<span>#(iWantPost.tagsStr)</span>
+            </ul>
+        </TD>
+        <TD width=770px align=left valign=top>
+            <h2>#(iWantPost.title)</h2>
 
-<div  >#(iWantPost.content)</div>
+            <span>#(iWantPost.author)</span>
+            <span>#(iWantPost.writeDayStr)</span>
+            <span>#(iWantPost.category)</span>
+            <span>#(iWantPost.tagsStr)</span>
+
+            <div  >#(iWantPost.content)</div>
 
 
-
+        </TD>
+    </TR>
+</TABLE>
 
 <!--代码块显示行号一共需要   四行代码    下面第四行-->
 <script type="text/javascript">

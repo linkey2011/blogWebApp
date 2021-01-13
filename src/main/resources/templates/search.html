@@ -237,20 +237,19 @@
 
 <div id="app" style="margin: 20px 20%">
     <form action="/search" method="post">
-        <input type="text" name="keyword" placeholder="这是搜索框"/>
+        <input type="text" name="content" placeholder="这是搜索框"/>
         <input type="submit" value="搜索" class="timeline__item__content__date">
     </form>
 </div>
 <div>
     <section class="timeline">
         <div class="wrapper">
-            #for(post:postList)
+            #for(post:searchPostList)
             <div class="timeline__item timeline__item--0">
 
                 <div class="timeline__item__station"></div>
                 <div class="timeline__item__content">
                     <h2 class="timeline__item__content__date"  >#(post.author)</h2>
-                    <span class="timeline__item__content__date"  >#(post.writeDayStr)</span>
                     <a  href="#(post.siteHalfURL)">
                         <p class="timeline__item__content__description" >#(post.summary)</p>
                     </a>
