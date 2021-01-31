@@ -1,10 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>博客详情</title>
+    <meta charset="UTF-8">
+    <title>#(iWantPost.title)</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <!--代码块显示行号一共需要   四行代码    下面为三行-->
 
+    <meta name="keywords" content="#(iWantPost.postKeywords)">
+    <meta name="description" content="##(iWantPost.summary)">
+
+    <!--代码块显示行号一共需要   四行代码    下面为三行-->
     <link   href="/prism/prism.css" rel="stylesheet" />
     <script src="/prism/prism.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>

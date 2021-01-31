@@ -4,10 +4,56 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>CSer'S Blog</title>
-<!--    <script type="text/javascript"   th:src="@{/js/jquery.min.js}"></script>-->
+    <title>#(blogConf.title)</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta name="keywords" content="#(blogConf.keywords)">
+    <meta name="description" content="#(blogConf.description)">
+
+
+
+    <script type="text/javascript" src="/timeline/jquery.min.js"></script>
+    <script type="text/javascript" src="/timeline/jquery.waypoints.min.js"></script>
+    <link href="/Material/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/Material/style.min.css" rel="stylesheet"/>
 
     <style>
+
+        #headerTop{
+            height: 78px;
+            width: 100%;
+            line-height: 78px;
+            /*使导航栏固定在顶部*/
+            position: fixed;
+            top:0;
+            left: 0px;
+            z-index: 1000;	/*一开始就不给导航栏设置背景色*/
+        }
+        #headerTop header .logo p{
+            font-size: 32px;
+            font-weight: 700;
+            color: #65666c;
+        }
+        #headerTop header .ulList ul{   /*使ul靠右*/
+            display: flex;
+            flex-direction: row;	/*使子项显示为行，从左到右显示*/
+            justify-content: flex-end;	/*让子项li靠区域结束位置对齐*/
+        }
+        #headerTop header .ulList ul li a{
+            font-size: 16px;
+            margin: 0 12px;
+            color: #fff;
+        }
+
+        /*滑动鼠标滚轮后*/
+        #headerTop.sticky{
+            background: pink;
+            border: 1px solid #dbdde1;
+        }
+
+
+
+
+
         @import url('https://fonts.googleapis.com/css?family=Nunito:300,400,700');
 
         /* _variables.css */
@@ -21,8 +67,8 @@
 
         body {
             font-family: 'Nunito', sans-serif;
-            background: -webkit-linear-gradient(right, #BE93C5 , #7BC6CC);
-            background: linear-gradient(to left, #BE93C5 , #7BC6CC);
+            background: -webkit-linear-gradient(right, #BE93C5, #7BC6CC);
+            background: linear-gradient(to left, #BE93C5, #7BC6CC);
         }
 
         img {
@@ -36,6 +82,7 @@
             padding: 40px 0;
 
         }
+
         .site-header__title {
             font-size: 36px;
             color: #fff;
@@ -58,6 +105,7 @@
             padding: 60px 0;
 
         }
+
         .timeline::before {
             content: "";
             position: absolute;
@@ -67,71 +115,90 @@
             height: 100%;
             background-color: #8d94b1;
         }
-        @media (min-width: 800px){
-            .timeline::before{
+
+        @media (min-width: 800px) {
+            .timeline::before {
                 left: 50%;
                 margin-left: -2px;
             }
         }
+
         .timeline__item {
             margin-bottom: 100px;
             position: relative;
         }
-        .timeline__item::after{
+
+        .timeline__item::after {
             content: "";
             clear: both;
             display: table;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content {
             float: right;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content::before {
             content: '';
             right: 40%;
         }
-        @media (min-width: 800px){
-            .timeline__item:nth-child(2n) .timeline__item__content::before{
+
+        @media (min-width: 800px) {
+            .timeline__item:nth-child(2n) .timeline__item__content::before {
                 left: inherit;
             }
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content__date {
             background-color: #b292c5;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content__description {
             color: #b292c5;
         }
+
         .timeline__item:last-child {
             margin-bottom: 0;
         }
+
         .timeline__item-bg {
             -webkit-transition: all 1s ease-out;
             transition: all 1s ease-out;
             color: #fff;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__station {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content::before {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content__description {
             color: #fff;
         }
+
         .timeline__item-bg .timeline__item__station {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content::before {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content__description {
             color: #fff;
         }
+
         .timeline__item__station {
             background-color: #9aa0b9;
             width: 40px;
@@ -146,8 +213,9 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__station{
+
+        @media (min-width: 800px) {
+            .timeline__item__station {
                 left: 50%;
                 margin-left: -30px;
                 width: 60px;
@@ -156,6 +224,7 @@
                 border-width: 6px;
             }
         }
+
         .timeline__item__content {
             width: 80%;
             background: #fff;
@@ -165,13 +234,15 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__content{
+
+        @media (min-width: 800px) {
+            .timeline__item__content {
                 width: 40%;
                 float: inherit;
                 padding: 30px 40px;
             }
         }
+
         .timeline__item__content::before {
             content: '';
             position: absolute;
@@ -184,14 +255,16 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__content::before{
+
+        @media (min-width: 800px) {
+            .timeline__item__content::before {
                 left: 40%;
                 top: 30px;
                 height: 4px;
                 margin-top: -2px;
             }
         }
+
         .timeline__item__content__date {
             margin: 0;
             padding: 8px 12px;
@@ -203,6 +276,7 @@
             border-radius: 4px;
             border: 2px solid #fff;
         }
+
         .timeline__item__content__description {
             margin: 0;
             padding: 0;
@@ -211,48 +285,74 @@
             font-weight: 300;
             color: #65adb7;
         }
-        @media (min-width: 800px){
-            .timeline__item__content__description{
+
+        @media (min-width: 800px) {
+            .timeline__item__content__description {
                 font-size: 19px;
                 line-height: 28px;
             }
         }
 
-        /* _site-footer.css */
-        .site-footer {
-            padding: 50px 0 200px 0;
+        a:link, a:visited {
+            text-decoration: none; /*超链接无下划线*/
+        }
 
+        a:hover {
+            text-decoration: underline; /*鼠标放上去有下划线*/
         }
-        .site-footer__text {
-            color: #e6e6e6;
-            font-size: 14px;
-            text-align: center;
-        }
-        .site-footer__text__link {
-            color: #8287a9;
-        }
+
     </style>
 </head>
 <body>
 
-<div id="app" style="margin: 20px 20%">
-    <form action="/search" method="post">
-        <input type="text" name="keyword" placeholder="这是搜索框"/>
-        <input type="submit" value="搜索" class="timeline__item__content__date">
-    </form>
+<div id="headerTop" >
+    <header id="main-navigation" class="collapse navbar-collapse">
+        <ul id="menu-%e9%a1%b6%e9%83%a8%e5%af%bc%e8%88%aa" class="nav navbar-nav navbar-right">
+            <li id="menu-item-65" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-64"><a
+                    title="首页" href="#(blogConf.domain)">首页</a></li>
+
+
+            #for(category:categoryList)
+            <li id="menu-item-#(for.index)" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-#(for.index)"><a
+                    title="#(category)" href="/Category/#(category)">#(category)</a></li>
+            #end
+
+            <li class="material-search-in-menu">
+                <form role="search" method="get" class="material-search-in-nav material-search-form form-group"
+                      action="/search">
+                    <div class="material-nav-search">
+                        <span class="screen-reader-text">搜索：</span>
+                        <span class="search-field-wrapper form-group">
+
+                    <input type="search" class="top-nav-search search-field form-control" placeholder="搜索…" value=""
+                           name="keyword" style="transition: background 300ms ease-out 0ms;">
+					</span>
+                        <span class="search-submit-wrapper">
+                    <button type="submit" class="search-submit material-search-submit"><i
+                            class="fa fa-search"></i></button>
+					</span>
+                    </div>
+                </form>
+
+            </li>
+        </ul>
+    </header>
 </div>
+
+
+
 <div>
     <section class="timeline">
         <div class="wrapper">
             #for(post:postList)
-            <div class="timeline__item timeline__item--0">
+            <div class="timeline__item timeline__item--#(for.index)">
 
                 <div class="timeline__item__station"></div>
                 <div class="timeline__item__content">
-                    <h2 class="timeline__item__content__date"  >#(post.author)</h2>
-                    <span class="timeline__item__content__date"  >#(post.writeDayStr)</span>
-                    <a  href="#(post.siteHalfURL)">
-                        <p class="timeline__item__content__description" >#(post.summary)</p>
+                    <h2 class="timeline__item__content__date">#(post.author)</h2>
+                    <span class="timeline__item__content__date">#(post.writeDayStr)</span>
+                    <a href="#(post.siteHalfURL)" class="timeline__item__content__description">
+                        <p class="timeline__item__content__description">#(post.summary)</p>
                     </a>
 
                 </div>
@@ -263,10 +363,11 @@
         </div>
     </section>
 </div>
+
 <script>
     function customWayPoint(className, addClassName, customOffset) {
         var waypoints = $(className).waypoint({
-            handler: function(direction) {
+            handler: function (direction) {
                 if (direction == "down") {
                     $(className).addClass(addClassName);
                 } else {
@@ -279,9 +380,20 @@
 
     var defaultOffset = '50%';
 
-    for (i = 0; i < 17; i++) {
+    for (i = 0; i < 100; i++) {
         customWayPoint('.timeline__item--' + i, 'timeline__item-bg', defaultOffset);
     }
+</script>
+<script>
+    // 使顶部导航栏下滑显示，上滑透明
+    // 添加滚动事件
+    window.addEventListener('scroll', function() {
+        //获取元素
+        var header = document.querySelector("header");  //querySelector() 方法返回文档中匹配指定 CSS 选择器的一个元素。
+        // 添加类
+        header.classList.toggle("sticky", window.scrollY > 0 )
+    });
+
 </script>
 
 </body>

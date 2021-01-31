@@ -5,7 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <title>CSer'S Blog</title>
-<!--    <script type="text/javascript"   th:src="@{/js/jquery.min.js}"></script>-->
+    <!--    <script type="text/javascript"   th:src="@{/js/jquery.min.js}"></script>-->
+    <script type="text/javascript" src="/timeline/jquery.min.js"></script>
+    <script type="text/javascript" src="/timeline/jquery.waypoints.min.js"></script>
+    <link href="/Material/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/Material/style.min.css" rel="stylesheet"/>
 
     <style>
         @import url('https://fonts.googleapis.com/css?family=Nunito:300,400,700');
@@ -21,8 +25,8 @@
 
         body {
             font-family: 'Nunito', sans-serif;
-            background: -webkit-linear-gradient(right, #BE93C5 , #7BC6CC);
-            background: linear-gradient(to left, #BE93C5 , #7BC6CC);
+            background: -webkit-linear-gradient(right, #BE93C5, #7BC6CC);
+            background: linear-gradient(to left, #BE93C5, #7BC6CC);
         }
 
         img {
@@ -36,6 +40,7 @@
             padding: 40px 0;
 
         }
+
         .site-header__title {
             font-size: 36px;
             color: #fff;
@@ -58,6 +63,7 @@
             padding: 60px 0;
 
         }
+
         .timeline::before {
             content: "";
             position: absolute;
@@ -67,71 +73,90 @@
             height: 100%;
             background-color: #8d94b1;
         }
-        @media (min-width: 800px){
-            .timeline::before{
+
+        @media (min-width: 800px) {
+            .timeline::before {
                 left: 50%;
                 margin-left: -2px;
             }
         }
+
         .timeline__item {
             margin-bottom: 100px;
             position: relative;
         }
-        .timeline__item::after{
+
+        .timeline__item::after {
             content: "";
             clear: both;
             display: table;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content {
             float: right;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content::before {
             content: '';
             right: 40%;
         }
-        @media (min-width: 800px){
-            .timeline__item:nth-child(2n) .timeline__item__content::before{
+
+        @media (min-width: 800px) {
+            .timeline__item:nth-child(2n) .timeline__item__content::before {
                 left: inherit;
             }
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content__date {
             background-color: #b292c5;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content__description {
             color: #b292c5;
         }
+
         .timeline__item:last-child {
             margin-bottom: 0;
         }
+
         .timeline__item-bg {
             -webkit-transition: all 1s ease-out;
             transition: all 1s ease-out;
             color: #fff;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__station {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content::before {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content__description {
             color: #fff;
         }
+
         .timeline__item-bg .timeline__item__station {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content::before {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content__description {
             color: #fff;
         }
+
         .timeline__item__station {
             background-color: #9aa0b9;
             width: 40px;
@@ -146,8 +171,9 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__station{
+
+        @media (min-width: 800px) {
+            .timeline__item__station {
                 left: 50%;
                 margin-left: -30px;
                 width: 60px;
@@ -156,6 +182,7 @@
                 border-width: 6px;
             }
         }
+
         .timeline__item__content {
             width: 80%;
             background: #fff;
@@ -165,13 +192,15 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__content{
+
+        @media (min-width: 800px) {
+            .timeline__item__content {
                 width: 40%;
                 float: inherit;
                 padding: 30px 40px;
             }
         }
+
         .timeline__item__content::before {
             content: '';
             position: absolute;
@@ -184,14 +213,16 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__content::before{
+
+        @media (min-width: 800px) {
+            .timeline__item__content::before {
                 left: 40%;
                 top: 30px;
                 height: 4px;
                 margin-top: -2px;
             }
         }
+
         .timeline__item__content__date {
             margin: 0;
             padding: 8px 12px;
@@ -203,6 +234,7 @@
             border-radius: 4px;
             border: 2px solid #fff;
         }
+
         .timeline__item__content__description {
             margin: 0;
             padding: 0;
@@ -211,8 +243,9 @@
             font-weight: 300;
             color: #65adb7;
         }
-        @media (min-width: 800px){
-            .timeline__item__content__description{
+
+        @media (min-width: 800px) {
+            .timeline__item__content__description {
                 font-size: 19px;
                 line-height: 28px;
             }
@@ -223,30 +256,92 @@
             padding: 50px 0 200px 0;
 
         }
+
         .site-footer__text {
             color: #e6e6e6;
             font-size: 14px;
             text-align: center;
         }
+
         .site-footer__text__link {
             color: #8287a9;
         }
+
+        .a {
+            text-decoration: none;
+        }
+
+
+        a:link, a:visited {
+            text-decoration: none; /*超链接无下划线*/
+        }
+
+        a:hover {
+            text-decoration: underline; /*鼠标放上去有下划线*/
+        }
+
     </style>
 </head>
 <body>
+<div class="container">
+<!--    <div class="navbar-header">-->
+<!--        <div class="title-logo-wrapper">-->
+<!--            <a class="navbar-brand" href="https://blog.hello.faith/" title="Hello，Faith"><p>Hello，Faith</p></a>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div id="main-navigation" class="collapse navbar-collapse">
+        <ul id="menu-%e9%a1%b6%e9%83%a8%e5%af%bc%e8%88%aa" class="nav navbar-nav navbar-right">
+            <li id="menu-item-64" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-64"><a
+                    title="哲思" href="https://blog.hello.faith/category/philosophy">哲思</a></li>
+            <li id="menu-item-7725" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7725">
+                <a title="读后感" href="https://blog.hello.faith/category/book-review">读后感</a></li>
+            <li id="menu-item-7726" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7726">
+                <a title="生活" href="https://blog.hello.faith/category/life">生活</a></li>
+            <li id="menu-item-7727" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7727"><a
+                    title="关于" href="https://blog.hello.faith/about">关于</a></li>
+            <li id="menu-item-7728" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7728"><a
+                    title="友链" href="https://blog.hello.faith/my-links">友链</a></li>
 
+
+            <li class="material-search-in-menu">
+                <form role="search" method="get" class="material-search-in-nav material-search-form form-group"
+                      action="/search">
+                    <div class="material-nav-search">
+                        <span class="screen-reader-text">搜索：</span>
+                        <span class="search-field-wrapper form-group">
+
+                    <input type="search" class="top-nav-search search-field form-control" placeholder="搜索…" value=""
+                           name="keyword" style="transition: background 300ms ease-out 0ms;">
+					</span>
+                        <span class="search-submit-wrapper">
+                    <button type="submit" class="search-submit material-search-submit"><i
+                            class="fa fa-search"></i></button>
+					</span>
+                    </div>
+                </form>
+                <div class="material-toggle-search">
+                    <i class="fa fa-search"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
+    </button>
+</div>
 
 <div>
     <section class="timeline">
         <div class="wrapper">
-            #for(post:searchPostList)
-            <div class="timeline__item timeline__item--0">
+            #for(post:postList)
+
+            <div class="timeline__item timeline__item--#(for.index)">
 
                 <div class="timeline__item__station"></div>
                 <div class="timeline__item__content">
-                    <h2 class="timeline__item__content__date"  >#(post.author)</h2>
-                    <a  href="#(post.siteHalfURL)">
-                        <p class="timeline__item__content__description" >#(post.summary)</p>
+                    <h2 class="timeline__item__content__date">#(post.author)</h2>
+                    <span class="timeline__item__content__date">#(post.writeDayStr)</span>
+                    <a href="#(post.siteHalfURL)" class="timeline__item__content__description">
+                        <p class="timeline__item__content__description">#(post.summary)</p>
                     </a>
 
                 </div>
@@ -260,7 +355,7 @@
 <script>
     function customWayPoint(className, addClassName, customOffset) {
         var waypoints = $(className).waypoint({
-            handler: function(direction) {
+            handler: function (direction) {
                 if (direction == "down") {
                     $(className).addClass(addClassName);
                 } else {
@@ -273,7 +368,7 @@
 
     var defaultOffset = '50%';
 
-    for (i = 0; i < 17; i++) {
+    for (i = 0; i < 100; i++) {
         customWayPoint('.timeline__item--' + i, 'timeline__item-bg', defaultOffset);
     }
 </script>

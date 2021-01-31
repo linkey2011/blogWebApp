@@ -5,9 +5,67 @@
 <head>
     <meta charset="UTF-8">
     <title>CSer'S Blog</title>
-<!--    <script type="text/javascript"   th:src="@{/js/jquery.min.js}"></script>-->
+    <!--    <script type="text/javascript"   th:src="@{/js/jquery.min.js}"></script>-->
+    <script type="text/javascript" src="/timeline/jquery.min.js"></script>
+    <script type="text/javascript" src="/timeline/jquery.waypoints.min.js"></script>
+    <link href="/Material/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/Material/style.min.css" rel="stylesheet"/>
 
     <style>
+
+
+        /*通用样式*/
+        .main{ width: 1340px;  margin:0 auto;}  /*margin: auto; -> 使该区域在浏览器中央*/
+        * {
+            margin: 0; /* 外边距 */
+            padding: 0; /* 内边距 */
+            font-family: sans-serif; /* 字体样式 */
+        }
+        .l{ float: left;}
+        .r{float: right;}
+        li{list-style: none;}   /*list-style: none -> 去掉ul标签前的小圆点*/
+        a{text-decoration: none; color: #000;}      /*text-decoration: none -> 去掉a标签的下划线*/
+
+        /*!*主要部分*!*/
+        /*body{*/
+        /*    width: 100%;*/
+        /*    height: 1080px;*/
+        /*    background: black;*/
+        /*}*/
+        #headerTop{
+            height: 78px;
+            width: 100%;
+            line-height: 78px;
+            /*使导航栏固定在顶部*/
+            position: fixed;
+            top:0;
+            left: 0px;
+            z-index: 1000;	/*一开始就不给导航栏设置背景色*/
+        }
+        #headerTop header .logo p{
+            font-size: 32px;
+            font-weight: 700;
+            color: #65666c;
+        }
+        #headerTop header .ulList ul{   /*使ul靠右*/
+            display: flex;
+            flex-direction: row;	/*使子项显示为行，从左到右显示*/
+            justify-content: flex-end;	/*让子项li靠区域结束位置对齐*/
+        }
+        #headerTop header .ulList ul li a{
+            font-size: 16px;
+            margin: 0 12px;
+            color: #fff;
+        }
+
+        /*滑动鼠标滚轮后*/
+        #headerTop.sticky{
+            background: pink;
+            border: 1px solid #dbdde1;
+        }
+
+
+
         @import url('https://fonts.googleapis.com/css?family=Nunito:300,400,700');
 
         /* _variables.css */
@@ -21,8 +79,8 @@
 
         body {
             font-family: 'Nunito', sans-serif;
-            background: -webkit-linear-gradient(right, #BE93C5 , #7BC6CC);
-            background: linear-gradient(to left, #BE93C5 , #7BC6CC);
+            background: -webkit-linear-gradient(right, #BE93C5, #7BC6CC);
+            background: linear-gradient(to left, #BE93C5, #7BC6CC);
         }
 
         img {
@@ -36,6 +94,7 @@
             padding: 40px 0;
 
         }
+
         .site-header__title {
             font-size: 36px;
             color: #fff;
@@ -58,6 +117,7 @@
             padding: 60px 0;
 
         }
+
         .timeline::before {
             content: "";
             position: absolute;
@@ -67,71 +127,90 @@
             height: 100%;
             background-color: #8d94b1;
         }
-        @media (min-width: 800px){
-            .timeline::before{
+
+        @media (min-width: 800px) {
+            .timeline::before {
                 left: 50%;
                 margin-left: -2px;
             }
         }
+
         .timeline__item {
             margin-bottom: 100px;
             position: relative;
         }
-        .timeline__item::after{
+
+        .timeline__item::after {
             content: "";
             clear: both;
             display: table;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content {
             float: right;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content::before {
             content: '';
             right: 40%;
         }
-        @media (min-width: 800px){
-            .timeline__item:nth-child(2n) .timeline__item__content::before{
+
+        @media (min-width: 800px) {
+            .timeline__item:nth-child(2n) .timeline__item__content::before {
                 left: inherit;
             }
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content__date {
             background-color: #b292c5;
         }
+
         .timeline__item:nth-child(2n) .timeline__item__content__description {
             color: #b292c5;
         }
+
         .timeline__item:last-child {
             margin-bottom: 0;
         }
+
         .timeline__item-bg {
             -webkit-transition: all 1s ease-out;
             transition: all 1s ease-out;
             color: #fff;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__station {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content::before {
             background-color: #b292c5;
         }
+
         .timeline__item-bg:nth-child(2n) .timeline__item__content__description {
             color: #fff;
         }
+
         .timeline__item-bg .timeline__item__station {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content::before {
             background-color: #65adb7;
         }
+
         .timeline__item-bg .timeline__item__content__description {
             color: #fff;
         }
+
         .timeline__item__station {
             background-color: #9aa0b9;
             width: 40px;
@@ -146,8 +225,9 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__station{
+
+        @media (min-width: 800px) {
+            .timeline__item__station {
                 left: 50%;
                 margin-left: -30px;
                 width: 60px;
@@ -156,6 +236,7 @@
                 border-width: 6px;
             }
         }
+
         .timeline__item__content {
             width: 80%;
             background: #fff;
@@ -165,13 +246,15 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__content{
+
+        @media (min-width: 800px) {
+            .timeline__item__content {
                 width: 40%;
                 float: inherit;
                 padding: 30px 40px;
             }
         }
+
         .timeline__item__content::before {
             content: '';
             position: absolute;
@@ -184,14 +267,16 @@
             -webkit-transition: all .3s ease-out;
             transition: all .3s ease-out;
         }
-        @media (min-width: 800px){
-            .timeline__item__content::before{
+
+        @media (min-width: 800px) {
+            .timeline__item__content::before {
                 left: 40%;
                 top: 30px;
                 height: 4px;
                 margin-top: -2px;
             }
         }
+
         .timeline__item__content__date {
             margin: 0;
             padding: 8px 12px;
@@ -203,6 +288,7 @@
             border-radius: 4px;
             border: 2px solid #fff;
         }
+
         .timeline__item__content__description {
             margin: 0;
             padding: 0;
@@ -211,8 +297,9 @@
             font-weight: 300;
             color: #65adb7;
         }
-        @media (min-width: 800px){
-            .timeline__item__content__description{
+
+        @media (min-width: 800px) {
+            .timeline__item__content__description {
                 font-size: 19px;
                 line-height: 28px;
             }
@@ -223,30 +310,66 @@
             padding: 50px 0 200px 0;
 
         }
+
         .site-footer__text {
             color: #e6e6e6;
             font-size: 14px;
             text-align: center;
         }
+
         .site-footer__text__link {
             color: #8287a9;
         }
+
+        .a {
+            text-decoration: none;
+        }
+
+
+        a:link, a:visited {
+            text-decoration: none; /*超链接无下划线*/
+        }
+
+        a:hover {
+            text-decoration: underline; /*鼠标放上去有下划线*/
+        }
+
     </style>
 </head>
 <body>
+
+<div id="headerTop">
+    <header class = "main">
+        <div class="logo l">
+            <p>Classic</p>
+        </div>
+        <div class="ulList">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Aboout</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Team</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+</div>
 
 
 <div>
     <section class="timeline">
         <div class="wrapper">
-            #for(post:searchPostList)
-            <div class="timeline__item timeline__item--0">
+            #for(post:postList)
+
+            <div class="timeline__item timeline__item--#(for.index)">
 
                 <div class="timeline__item__station"></div>
                 <div class="timeline__item__content">
-                    <h2 class="timeline__item__content__date"  >#(post.author)</h2>
-                    <a  href="#(post.siteHalfURL)">
-                        <p class="timeline__item__content__description" >#(post.summary)</p>
+                    <h2 class="timeline__item__content__date">#(post.author)</h2>
+                    <span class="timeline__item__content__date">#(post.writeDayStr)</span>
+                    <a href="#(post.siteHalfURL)" class="timeline__item__content__description">
+                        <p class="timeline__item__content__description">#(post.summary)</p>
                     </a>
 
                 </div>
@@ -260,7 +383,7 @@
 <script>
     function customWayPoint(className, addClassName, customOffset) {
         var waypoints = $(className).waypoint({
-            handler: function(direction) {
+            handler: function (direction) {
                 if (direction == "down") {
                     $(className).addClass(addClassName);
                 } else {
@@ -273,10 +396,21 @@
 
     var defaultOffset = '50%';
 
-    for (i = 0; i < 17; i++) {
+    for (i = 0; i < 100; i++) {
         customWayPoint('.timeline__item--' + i, 'timeline__item-bg', defaultOffset);
     }
 </script>
+<SCRIPT>
+    // 使顶部导航栏下滑显示，上滑透明
+    // 添加滚动事件
+    window.addEventListener('scroll', function() {
+        //获取元素
+        var header = document.querySelector("header");  //querySelector() 方法返回文档中匹配指定 CSS 选择器的一个元素。
+        // 添加类
+        header.classList.toggle("sticky", window.scrollY > 0 )
+    });
+
+</SCRIPT>
 
 </body>
 </html>
