@@ -1,33 +1,30 @@
-package blog.cser.blogWebApp.util.aop;
+package blog.cser.blogWebApp.aop;
 
-import java.lang.reflect.Method;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
+import blog.cser.blogWebApp.conf.BlogConf;
 import blog.cser.blogWebApp.controller.MainController;
 import blog.cser.blogWebApp.util.IPUtil;
+import blog.cser.blogWebApp.util.IPUtil2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.URLDecoder;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +35,9 @@ import java.util.Map;
 @Component
 @Order(1)
 public class CSerLogAspect{
+    @Autowired
+    BlogConf    blogConf;
+
     @Pointcut("@annotation(blog.cser.blogWebApp.annotation.CSerLog)")
     public void webLog() {
     }
@@ -70,18 +70,28 @@ public class CSerLogAspect{
         //记录请求信息
         //执行具体的业务代码
         Object result = joinPoint.proceed();
+
+
         //秒表停止
         stopWatch.stop();
         String methodName = request.getRequestURI(); // /api/category/query
-
+        URLDecoder URIDecoder = null;
+        methodName = URIDecoder.decode(methodName);
         //获取ip
-        String ip = IPUtil.getClientIpAddr(request);
-
+        String ip1 = IPUtil.getClientIpAddr(request);
+        String ip2 = IPUtil2.getIpAddress(request);
         System.out.println(LocalDateTime.now() +"   "+
                 methodName +"        耗时---->" +stopWatch.getTotalTimeMillis()+ "ms"
-                +"     ip--->"+ip
+                +"     ip--->"+ip1
+                +"     ip2--->"+ip2
+                +"参数"+getParameter(method, joinPoint.getArgs())
         );
 
+        if (result instanceof ModelAndView){
+            ModelAndView modelAndView = (ModelAndView)result;
+            modelAndView.addObject("blogConf", blogConf);
+            return modelAndView;
+        }
         return result;
     }
 
